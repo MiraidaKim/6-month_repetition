@@ -21,17 +21,19 @@ export const useAuth = create(set => ({
   },
 
   login: async loginDto => {
-    set({ isLoading: true, error: null })
-    try {
-      const { data } = await $mainApi.post('/login', loginDto)
-      set({ user: data.data })
-      localStorage.setItem('tokenAuth', data.token)
-    } catch (e) {
-      set({ error: e.message || 'Ошибка при авторизации' })
-    } finally {
-      set({ isLoading: false })
-    }
-  },
+  set({ isLoading: true, error: null })
+
+  try {
+    const { data } = await $mainApi.post('/auth', loginDto)
+    set({ user: data.data, isAuth: true })
+    localStorage.setItem('tokenAuth', data.token)
+  } catch (e) {
+    set({ error: e.message || 'Ошибка при авторизации' })
+  } finally {
+    set({ isLoading: false })
+  }
+},
+
 
   logout: () => {
     set({ user: null })
