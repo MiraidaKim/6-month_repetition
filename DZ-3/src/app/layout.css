@@ -1,10 +1,12 @@
-.layout-main {
-  padding: 12px;
-  min-height: 80vh;
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.layout-footer {
-  padding: 12px;
-  border-top: 1px solid #e6e6e6;
-  text-align: center;
+
+.layout-main {
+  flex: 1; 
+  padding: 20px;
 }

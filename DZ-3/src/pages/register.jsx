@@ -1,37 +1,46 @@
-import { useNavigate, Navigate } from 'react-router-dom'
-import { useInput } from '../hooks/use-input'
-import { useAuth } from '../store/use-auth'
-import './register.css'
+import {Navigate, useNavigate} from 'react-router-dom'
+import {useInput} from '../hooks/use-input'
+import {useAuth} from '../store/use-auth'
+import './register.css';
+
 
 export function Register() {
-  const fullName = useInput('')
-  const email = useInput('')
-  const password = useInput('')
-  const { register, isLoading, error, isAuth } = useAuth()
-  const navigate = useNavigate()
+	const fullName = useInput('')
+	const email = useInput('')
+	const password = useInput('')
 
-  const handleSubmit = async e => {
-    e.preventDefault()
-    await register({
-      fullName: fullName.value,
-      email: email.value,
-      password: password.value,
-    })
-    navigate('/')
-  }
+	const { register, isLoading, error, isAuth } = useAuth()
 
-  if (isAuth) return <Navigate to="/" />
+	const navigate = useNavigate()
 
-  return (
-    <div className="register-page">
-      <h1>Register</h1>
-      <form className="register-form" onSubmit={handleSubmit}>
-        <input {...fullName} type="text" placeholder="Full Name" />
-        <input {...email} type="text" placeholder="Email" />
-        <input {...password} type="password" placeholder="Password" />
-        <button disabled={isLoading}>Register</button>
-        {error && <p className="error">{error}</p>}
-      </form>
-    </div>
-  )
+	const handleSubmit = async (e) => {
+		e.preventDefault()
+
+		await register({
+			fullName: fullName.value,
+			email: email.value,
+			password: password.value,
+		})
+
+		navigate('/login')
+	}
+
+	if (isAuth) {
+		return <Navigate to='/' />
+	}
+
+	return (
+		<>
+			<h1>Register</h1>
+			<form onSubmit={handleSubmit}>
+				<input {...fullName} type='text' placeholder='Full Name' />
+				<input {...email} type='text' placeholder='Email' />
+				<input {...password} type='password' placeholder='Password' />
+
+				<button disabled={isLoading}>Register</button>
+
+				{error && <p>{error}</p>}
+			</form>
+		</>
+	)
 }

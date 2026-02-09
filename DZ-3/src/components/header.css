@@ -1,21 +1,31 @@
-.header {
-  border-bottom: 1px solid #e6e6e6;
-  padding: 12px;
+header {
+  background-color: #fff8f0;
+  border-bottom: 2px solid #e0c097;
+  padding: 15px 40px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  font-family: 'Georgia', serif;
 }
 
-.header-btn {
-  padding: 6px 12px;
-  cursor: pointer;
-  border-radius: 4px;
-  background-color: #1a1a1a;
-  color: #fff;
-  border: 1px solid transparent;
-  transition: border-color 0.25s;
+header div:first-child {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #5b3a29;
 }
 
-.header-btn:hover {
-  border-color: #646cff;
+header input {
+  flex: 1;
+  max-width: 300px;
+  padding: 7px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+header button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem;
 }

@@ -1,31 +1,25 @@
-import { createBrowserRouter } from 'react-router-dom'
-import { Layout } from './layout'
-import { Home } from '../pages/home'
-import { Login } from '../pages/login'
-import { Register } from '../pages/register'
-import { ProtectedRoute } from './protected-route'
+import {createBrowserRouter} from 'react-router-dom';
+import {Home} from '../pages/home';
+import {Login} from '../pages/login';
+import {Register} from '../pages/register';
+import {Layout} from './layout';
+import {ProtectedRoute} from './protected-route';
+import {ProductDetail} from '../pages/product-detail.jsx'; 
 
 export const router = createBrowserRouter([
-  {
-    element: <Layout />,
-    children: [
-      {
-        element: <ProtectedRoute />,
+    {
+        element: <Layout />,
         children: [
-          {
-            path: '/',
-            element: <Home />,
-          },
+            {
+                element: <ProtectedRoute />,
+                children: [
+                    { path: '/orders', element: <div>Orders</div> }
+                ],
+            },
+            { path: '/register', element: <Register /> },
+            { path: '/login', element: <Login /> },
+            { path: '/product/:id', element: <ProductDetail /> }, 
+            { path: '/', element: <Home /> },
         ],
-      },
-      {
-        path: '/login',
-        element: <Login />,
-      },
-      {
-        path: '/register',
-        element: <Register />,
-      },
-    ],
-  },
-])
+    },
+]);
