@@ -6,6 +6,7 @@ import {Layout} from './layout';
 import {ProtectedRoute} from './protected-route';
 import {ProductDetail} from '../pages/product-detail.jsx'; 
 
+
 export const router = createBrowserRouter([
     {
         element: <Layout />,
@@ -19,7 +20,9 @@ export const router = createBrowserRouter([
             { path: '/register', element: <Register /> },
             { path: '/login', element: <Login /> },
             { path: '/product/:id', element: <ProductDetail /> }, 
-            { path: '/', element: <Home /> },
+            { path: '/', element: <Home /> }
+
+
         ],
     },
 ]);

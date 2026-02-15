@@ -11,17 +11,22 @@ const createApi = () =>
 const $mainApi = createApi()
 const $authApi = createApi()
 
-$authApi.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('tokenAuth')
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config
-    },
-    (error) => {
-        return Promise.reject(error)
-    }
-)
+const addAuthInterceptor = (api) => {
+	api.interceptors.request.use(
+		(config) => {
+			const token = localStorage.getItem('tokenAuth')
+
+			if (token) {
+				config.headers.Authorization = `Bearer ${token}`
+			}
+
+			return config
+		},
+		(error) => Promise.reject(error)
+	)
+}
+
+addAuthInterceptor($authApi)
+addAuthInterceptor($mainApi)
 
 export { $mainApi, $authApi }

@@ -1,19 +1,22 @@
 import {useAuth} from '../store/use-auth'
 import {Button} from 'react-bootstrap'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useLocation} from 'react-router-dom'
 import {useProducts} from '../store/use-products.js'
 import {ShoppingCart, User} from 'lucide-react'
 import './header.css';
-
-
+import { Basket } from './bascet.jsx'
+import { useState } from 'react'
 
 export function Header() {
-	const logout = useAuth(state => state.logout)
+    const logout = useAuth(state => state.logout)
     const isAuth = useAuth(state => state.isAuth)
 
-    const {search, setSearch} = useProducts()
+    const [showBasket, setShowBasket] = useState(false) 
 
+    const location = useLocation()
     const navigate = useNavigate()
+
+    const {search, setSearch} = useProducts()
 
     const onAuthButtonClick = () => {
         if (isAuth) {
@@ -24,9 +27,12 @@ export function Header() {
         }
     }
 
+    if (location.pathname === '/login' || location.pathname === '/register') {
+        return null
+    }
 
-	return (
-		<header className='border-bottom p-3 d-flex align-items-center justify-content-between'>
+    return (
+        <header className='border-bottom p-3 d-flex align-items-center justify-content-between'>
             <div>Book Store</div>
             <input type='text' placeholder='Поиск' value={search} onChange={(e) => setSearch(e.target.value)} />
             <div className='d-flex gap-2'>
@@ -34,12 +40,15 @@ export function Header() {
                     {!isAuth && <User size={20} />}
                     {isAuth ? 'Выйти' : 'Войти'}
                 </Button>
-
-                <Button className='d-flex align-items-center gap-1'>
-                    <ShoppingCart size={20} />
-                    Корзина
-                </Button>
+                {isAuth && (
+                    <Button className='d-flex align-items-center gap-1' onClick={() => setShowBasket(true)}>
+                        <ShoppingCart size={20} />
+                        Корзина
+                    </Button> 
+                )}
             </div>
-		</header>
-	)
+
+            <Basket show={showBasket} handleClose={() => setShowBasket(false)} placement='end' />
+        </header>
+    )
 }

@@ -42,3 +42,4 @@ export const useAuth = create(set => ({
         set({ isAuth: true, user })
     }
 }))
+

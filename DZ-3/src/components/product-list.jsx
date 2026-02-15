@@ -1,14 +1,19 @@
 import {ProductCard} from './product-card.jsx';
 import {useProducts} from '../store/use-products.js';
 import {useEffect} from 'react';
+import {useDebounce} from '../hooks/use-debounce.js';
 import './product-list.css';
 
 export function ProductList() {
     const { products, isLoading, error, fetchProducts, search } = useProducts();
 
+    const debouncedSearch = useDebounce(search, 500);
+
     useEffect(() => {
-        fetchProducts({});
-    }, []);
+        fetchProducts({
+            name: `*${debouncedSearch}`
+        });
+    }, [debouncedSearch]);
 
     if (isLoading) return <div>LOADING...</div>;
     if (error) return <div>{error}</div>;
@@ -21,4 +26,3 @@ export function ProductList() {
         </div>
     );
 }
-
