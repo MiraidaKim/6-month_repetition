@@ -1,8 +1,5 @@
 import { useEffect } from 'react'
-import Card from 'react-bootstrap/Card'
 import Offcanvas from 'react-bootstrap/Offcanvas'
-import { Button, CardFooter } from 'react-bootstrap'
-import { Trash } from 'lucide-react'
 import { useBasket } from '../store/use-basket.js'
 import './bascet.css'
 
@@ -13,9 +10,7 @@ export function Basket({ show, handleClose, ...props }) {
         loadData()
     }, [])
 
-    if (isLoading) {
-        return <div>Загрузка...</div>
-    }
+    if (isLoading) return <div>Загрузка...</div>
 
     return (
         <Offcanvas show={show} onHide={handleClose} {...props} placement="end">
@@ -25,22 +20,16 @@ export function Basket({ show, handleClose, ...props }) {
             <Offcanvas.Body>
                 {list.length === 0 && <p>Корзина пустая</p>}
 
-                {list.map((item) => (
-                    <Card key={item.id} className="cart-item">
-                        <div className="cart-item-info">
-                            <Card.Title>{item.products?.name || item.name}</Card.Title>
-                            <Card.Text>{item.products?.price || item.price} $</Card.Text>
-                        </div>
-                        <CardFooter className="cart-item-footer">
-                            <Button
-                                variant="outline-danger"
-                                onClick={() => deleteFromBasket(item.id)}
-                            >
-                                <Trash color="red" />
-                            </Button>
-                        </CardFooter>
-                    </Card>
+                {list.map(item => (
+                    <div key={item.id} className="cart-item">
+                        <h4>{item.product?.name}</h4>
+                        <p>{item.product?.price} $</p>
+                        <button onClick={() => deleteFromBasket(item.id)}>
+                        Удалить
+                        </button>
+                    </div>
                 ))}
+
             </Offcanvas.Body>
         </Offcanvas>
     )

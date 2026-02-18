@@ -10,6 +10,7 @@ export function ProductCard({ id, name, author, price, year, picture, descriptio
     const { addToBasket, isCreateLoading } = useBasket();
     const user = useAuth(state => state.user);
     const navigate = useNavigate();
+    
 
     const onCreate = async () => {
         if (!user) {

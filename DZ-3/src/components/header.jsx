@@ -1,8 +1,8 @@
-import {useAuth} from '../store/use-auth'
-import {Button} from 'react-bootstrap'
-import {useNavigate, useLocation} from 'react-router-dom'
-import {useProducts} from '../store/use-products.js'
-import {ShoppingCart, User} from 'lucide-react'
+import { useAuth } from '../store/use-auth'
+import { Button } from 'react-bootstrap'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useProducts } from '../store/use-products.js'
+import { ShoppingCart, User } from 'lucide-react'
 import './header.css';
 import { Basket } from './bascet.jsx'
 import { useState } from 'react'
@@ -16,32 +16,38 @@ export function Header() {
     const location = useLocation()
     const navigate = useNavigate()
 
-    const {search, setSearch} = useProducts()
+    const { search, setSearch } = useProducts()
 
     const onAuthButtonClick = () => {
-        if (isAuth) {
-            logout()
-        }
-        else {
-            navigate('/login')
-        }
+        if (isAuth) logout()
+        else navigate('/login')
     }
 
-    if (location.pathname === '/login' || location.pathname === '/register') {
-        return null
-    }
+    if (location.pathname === '/login' || location.pathname === '/register') return null
 
     return (
         <header className='border-bottom p-3 d-flex align-items-center justify-content-between'>
             <div>Book Store</div>
-            <input type='text' placeholder='Поиск' value={search} onChange={(e) => setSearch(e.target.value)} />
+            <input 
+                type='text' 
+                placeholder='Поиск' 
+                value={search} 
+                onChange={(e) => setSearch(e.target.value)} 
+            />
             <div className='d-flex gap-2'>
-                <Button variant={isAuth ? 'secondary' : 'primary'} onClick={onAuthButtonClick} className='d-flex align-items-center gap-1'>
+                <Button 
+                    variant={isAuth ? 'secondary' : 'primary'} 
+                    onClick={onAuthButtonClick} 
+                    className='d-flex align-items-center gap-1'
+                >
                     {!isAuth && <User size={20} />}
                     {isAuth ? 'Выйти' : 'Войти'}
                 </Button>
                 {isAuth && (
-                    <Button className='d-flex align-items-center gap-1' onClick={() => setShowBasket(true)}>
+                    <Button 
+                        className='d-flex align-items-center gap-1' 
+                        onClick={() => setShowBasket(true)}
+                    >
                         <ShoppingCart size={20} />
                         Корзина
                     </Button> 
