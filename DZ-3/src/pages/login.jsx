@@ -1,25 +1,47 @@
-import {Navigate, useNavigate} from 'react-router-dom'
-import {useInput} from '../hooks/use-input'
-import {useAuth} from '../store/use-auth'
-import './login.css'; 
+import { Navigate, useNavigate } from 'react-router-dom'
+import { useInput } from '../hooks/use-input'
+import { useAuth } from '../store/use-auth'
+import { useMutation } from '@tanstack/react-query'
+import { $mainApi } from '../api/requester'
+import './login.css'
 
 export function Login() {
 	const email = useInput('')
 	const password = useInput('')
 
-	const { login, isLoading, error, isAuth } = useAuth()
+	const { setUser, setLoading, setError, isAuth, isLoading, error } = useAuth()
 
 	const navigate = useNavigate()
 
-	const handleSubmit = async (e) => {
+	const { mutate } = useMutation({
+		mutationFn: async (loginDto) => {
+			const { data } = await $mainApi.post('/auth', loginDto)
+			return data
+		},
+		onMutate: () => {
+			setLoading(true)
+			setError(null)
+		},
+		onSuccess: (data) => {
+			setUser(data.data)
+			localStorage.setItem('tokenAuth', data.token)
+			navigate('/')
+		},
+		onError: (e) => {
+			setError(e.message || 'Ошибка при авторизации')
+		},
+		onSettled: () => {
+			setLoading(false)
+		}
+	})
+
+	const handleSubmit = (e) => {
 		e.preventDefault()
 
-		await login({
+		mutate({
 			email: email.value,
 			password: password.value,
 		})
-
-		navigate('/')
 	}
 
 	if (isAuth) {

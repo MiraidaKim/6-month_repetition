@@ -5,6 +5,7 @@ export const useBasket = create((set, get) => ({
     list: [],
     isLoading: false,
     isCreateLoading: false,
+    isOrderLoading: false,
 
     loadData: async () => {
         set({ isLoading: true })
@@ -36,7 +37,6 @@ export const useBasket = create((set, get) => ({
             set({ list: [...get().list, data] })
         } catch (err) {
             console.log(err)
-            throw err
         } finally {
             set({ isCreateLoading: false })
         }
@@ -48,6 +48,42 @@ export const useBasket = create((set, get) => ({
             set({ list: get().list.filter(item => item.id !== id) })
         } catch (err) {
             console.log(err)
+        }
+    },
+
+    createOrder: async (userId) => {
+        const { list } = get()
+
+        if (!list.length) return
+
+        set({ isOrderLoading: true })
+
+        try {
+            const totalPrice = list.reduce(
+                (sum, item) => sum + item.product.price,
+                0
+            )
+
+            const orderData = {
+                user_id: userId,
+                totalPrice,
+                items: list.map(item => item.product)
+            }
+
+            await $mainApi.post('/orders', orderData)
+
+            await Promise.all(
+                list.map(item =>
+                    $mainApi.delete(`/cart/${item.id}`)
+                )
+            )
+
+            set({ list: [] })
+
+        } catch (err) {
+            console.log(err)
+        } finally {
+            set({ isOrderLoading: false })
         }
     }
 }))
